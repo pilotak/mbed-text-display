@@ -23,16 +23,16 @@ SOFTWARE.
 #include "mbed.h"
 #include "TextLCD.h"
 
-TextLCD::TextLCD(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, PinName d7, PinName rw, lcd_size_t type):
-    DisplayBase{type, (rw != NC)}, _rs(rs), _en(en), _data(d4, d5, d6, d7) {
+TextLCD::TextLCD(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, PinName d7, PinName rw, lcd_size_t size):
+    DisplayBase{size, (rw != NC)}, _rs(rs), _en(en), _data(d4, d5, d6, d7) {
 
-    _data.output();
-    _data.write(0);
-    _en.write(0);
+    dataOutput();
+    dataWrite(0);
+    TextLCD::en(0);
 
     if (rw != NC) {
         _rw = new DigitalOut(rw);
-        _rw->write(1);
+        TextLCD::rw(1);
     }
 }
 

@@ -54,10 +54,10 @@ class DisplayBase : public Stream {
     /**
      * @brief Create an interface
 
-     * @param type  Sets the panel size/addressing mode
-     * @param bf  Set to true if budy flag should be used
+     * @param size  Panel size
+     * @param bf  Set to true if busy flag should be used
      */
-    DisplayBase(lcd_size_t type, bool bf);
+    DisplayBase(lcd_size_t size, bool bf);
 
     /**
      * @brief Clear the screen and locate to 0,0
@@ -129,6 +129,7 @@ class DisplayBase : public Stream {
         CMD_SET_CGRAM_ADDR  = 0b1000000,
         CMD_SET_DDRAM_ADDR  = 0b10000000,
     };
+
     enum lcd_control_t {
         CTRL_DISPLAY_ON            = 0b100, // D
         CTRL_DISPLAY_OFF           = 0, // D
@@ -171,20 +172,39 @@ class DisplayBase : public Stream {
      */
     void init(uint8_t dots = FN_5x8DOTS, uint8_t chars = FN_FONT_JAPANESE);
 
+    /**
+     * @brief Write command (with wait or busy flag)
+     *
+     * @param command
+     */
     void writeCommand(uint8_t command);
+
+    /**
+     * @brief Write data (with wait or busy flag)
+     *
+     * @param data
+     */
     void writeData(uint8_t data);
+
+    /**
+     * @brief Write 4 bits
+     *
+     * @param value
+     */
     void writeBits(uint8_t value);
+
+    /**
+     * @brief Write byte
+     *
+     * @param value
+     */
     void writeByte(uint8_t value);
 
+    /**
+     * @brief Wait for instruction completion
+     *
+     */
     void waitReady();
-
-    virtual uint8_t dataRead() = 0;
-    virtual void dataWrite(uint8_t pins) = 0;
-    virtual void dataInput() = 0;
-    virtual void dataOutput() = 0;
-    virtual void en(bool state) = 0;
-    virtual void rs(bool state) = 0;
-    virtual void rw(bool state) = 0;
 
   private:
     const lcd_size_t _type = SIZE_16x2;
@@ -202,6 +222,14 @@ class DisplayBase : public Stream {
 
     void pulseEnable();
     uint8_t getAddress(uint8_t column, uint8_t row);
+
+    virtual uint8_t dataRead() = 0;
+    virtual void dataWrite(uint8_t pins) = 0;
+    virtual void dataInput() = 0;
+    virtual void dataOutput() = 0;
+    virtual void en(bool state) = 0;
+    virtual void rs(bool state) = 0;
+    virtual void rw(bool state) = 0;
 };
 
 #endif

@@ -20,9 +20,9 @@ SOFTWARE.
 
 #include "TextOLED.h"
 
-TextOLED::TextOLED(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, PinName d7, PinName rw, lcd_size_t type):
-    TextLCD{rs, en, d4, d5, d6, d7, rw, type} {
-    MBED_ASSERT(type != SIZE_20x4);
+TextOLED::TextOLED(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, PinName d7, PinName rw, lcd_size_t size):
+    TextLCD{rs, en, d4, d5, d6, d7, rw, size} {
+    MBED_ASSERT(size != SIZE_20x4);
 }
 
 void TextOLED::init(uint8_t dots, uint8_t chars) {

@@ -30,17 +30,26 @@ class TextLCD: public DisplayBase {
     /**
      * @brief Create an LCD interface
      *
-     * @param rs    Instruction/data control line
-     * @param e     Enable line (clock)
-     * @param d4-d7 Data lines for using as a 4-bit interface
-     * @param rw    R/W pin (default = NC)
-     * @param type  Sets the panel size/addressing mode (default = SIZE_16x2)
+     * @param rs    Instruction/data control pin
+     * @param e     Chip enable signal pin
+     * @param d4-d7 Data line pins
+     * @param rw    Read/write pin
+     * @param size  Panel size
      */
     TextLCD(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, PinName d7, PinName rw = NC,
-            lcd_size_t type = SIZE_16x2);
+            lcd_size_t size = SIZE_16x2);
 
+    /**
+     * @brief Destructor
+     *
+     */
     ~TextLCD();
 
+    /**
+     * @brief Initialize display
+     *
+     * @param dots Size of dots, can be 5x8 or 5x10 on some displays
+     */
     void init(uint8_t dots = FN_5x8DOTS);
 
   protected:

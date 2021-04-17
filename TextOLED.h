@@ -25,9 +25,24 @@ SOFTWARE.
 
 class TextOLED: public TextLCD {
   public:
-    TextOLED(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, PinName d7, PinName rw,
-             lcd_size_t type = SIZE_16x2);
+    /**
+     * @brief Create an OLED interface
+     *
+     * @param rs    Instruction/data control pin
+     * @param e     Chip enable signal pin
+     * @param d4-d7 Data line pins
+     * @param rw    Read/write pin
+     * @param size  Panel size
+     */
+    TextOLED(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, PinName d7, PinName rw = NC,
+             lcd_size_t size = SIZE_16x2);
 
+    /**
+     * @brief Initialize display
+     *
+     * @param dots Size of dots, can be 5x8 or 5x10 on some displays
+     * @param chars Font table used
+     */
     void init(uint8_t dots = FN_5x8DOTS, uint8_t chars = FN_FONT_JAPANESE);
 };
 
