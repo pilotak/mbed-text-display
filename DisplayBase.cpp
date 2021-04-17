@@ -87,33 +87,33 @@ void DisplayBase::home() {
 void DisplayBase::display(lcd_mode_t mode) {
     switch (mode) {
         case DISPLAY_ON :
-            _display_control |= CTRL_DISPLAY_ON;
-            writeCommand(CMD_DISPLAY_CONTROL | _display_control);
+            _control |= CTRL_DISPLAY_ON;
+            writeCommand(CMD_DISPLAY_CONTROL | _control);
             break;
 
         case DISPLAY_OFF:
-            _display_control &= ~CTRL_DISPLAY_ON;
-            writeCommand(CMD_DISPLAY_CONTROL | _display_control);
+            _control &= ~CTRL_DISPLAY_ON;
+            writeCommand(CMD_DISPLAY_CONTROL | _control);
             break;
 
         case CURSOR_ON:
-            _display_control |= CTRL_CURSOR_ON;
-            writeCommand(CMD_DISPLAY_CONTROL | _display_control);
+            _control |= CTRL_CURSOR_ON;
+            writeCommand(CMD_DISPLAY_CONTROL | _control);
             break;
 
         case CURSOR_OFF:
-            _display_control &= ~CTRL_CURSOR_ON;
-            writeCommand(CMD_DISPLAY_CONTROL | _display_control);
+            _control &= ~CTRL_CURSOR_ON;
+            writeCommand(CMD_DISPLAY_CONTROL | _control);
             break;
 
         case BLINK_ON:
-            _display_control |= CTRL_BLINK_ON;
-            writeCommand(CMD_DISPLAY_CONTROL | _display_control);
+            _control |= CTRL_BLINK_ON;
+            writeCommand(CMD_DISPLAY_CONTROL | _control);
             break;
 
         case BLINK_OFF:
-            _display_control &= ~CTRL_BLINK_ON;
-            writeCommand(CMD_DISPLAY_CONTROL | _display_control);
+            _control &= ~CTRL_BLINK_ON;
+            writeCommand(CMD_DISPLAY_CONTROL | _control);
             break;
 
         case SCROLL_LEFT:
@@ -125,23 +125,23 @@ void DisplayBase::display(lcd_mode_t mode) {
             break;
 
         case LEFT_TO_RIGHT:
-            _display_mode |= ENTRY_MODE_SHIFT_LEFT;
-            writeCommand(CMD_ENTRY_MODE_SET | _display_mode);
+            _entry_mode |= ENTRY_MODE_SHIFT_LEFT;
+            writeCommand(CMD_ENTRY_MODE_SET | _entry_mode);
             break;
 
         case RIGHT_TO_LEFT:
-            _display_mode &= ~ENTRY_MODE_SHIFT_LEFT;
-            writeCommand(CMD_ENTRY_MODE_SET | _display_mode);
+            _entry_mode &= ~ENTRY_MODE_SHIFT_LEFT;
+            writeCommand(CMD_ENTRY_MODE_SET | _entry_mode);
             break;
 
         case SCROLL_ON:
-            _display_mode |= ENTRY_MODE_INCREMENT;
-            writeCommand(CMD_ENTRY_MODE_SET | _display_mode);
+            _entry_mode |= ENTRY_MODE_INCREMENT;
+            writeCommand(CMD_ENTRY_MODE_SET | _entry_mode);
             break;
 
         case SCROLL_OFF:
-            _display_mode &= ~ENTRY_MODE_INCREMENT;
-            writeCommand(CMD_ENTRY_MODE_SET | _display_mode);
+            _entry_mode &= ~ENTRY_MODE_INCREMENT;
+            writeCommand(CMD_ENTRY_MODE_SET | _entry_mode);
             break;
     }
 }

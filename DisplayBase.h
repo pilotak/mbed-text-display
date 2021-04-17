@@ -210,8 +210,8 @@ class DisplayBase : public Stream {
     const lcd_size_t _type = SIZE_16x2;
     bool _bf = false;
 
-    uint8_t _display_control = CTRL_DISPLAY_OFF | CTRL_CURSOR_OFF | CTRL_BLINK_OFF;
-    uint8_t _display_mode = 0;
+    uint8_t _control = CTRL_DISPLAY_OFF | CTRL_CURSOR_OFF | CTRL_BLINK_OFF;
+    uint8_t _entry_mode = ENTRY_MODE_DECREMENT | ENTRY_MODE_SHIFT_RIGHT;
 
     uint8_t _column = 0;
     uint8_t _row = 0;
