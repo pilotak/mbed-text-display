@@ -48,9 +48,9 @@ class TextLCD: public DisplayBase {
     /**
      * @brief Initialize display
      *
-     * @param dots Size of dots, can be 5x8 or 5x10 on some displays
+     * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
      */
-    void init(uint8_t dots = FN_5x8DOTS);
+    void init(lcd_char_t chars = CHAR_5X8);
 
   protected:
     uint8_t dataRead() override;

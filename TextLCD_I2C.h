@@ -21,6 +21,8 @@ SOFTWARE.
 #ifndef TEXT_LCD_I2C_H
 #define TEXT_LCD_I2C_H
 
+#define TEXT_DISPLAY_I2C_ADDRESS (0x27 << 1)
+
 #include "DisplayBase.h"
 
 class TextLCD_I2C: public DisplayBase {
@@ -32,7 +34,7 @@ class TextLCD_I2C: public DisplayBase {
      * @param address 7-bit I2C address of the expander
      * @param frequency I2C bus speed
      */
-    TextLCD_I2C(lcd_size_t size = SIZE_16x2, int8_t address = 123);
+    TextLCD_I2C(lcd_size_t size = SIZE_16x2, int8_t address = TEXT_DISPLAY_I2C_ADDRESS);
 
     /**
      * @brief Create an I2C LCD interface
@@ -44,7 +46,7 @@ class TextLCD_I2C: public DisplayBase {
      * @param frequency I2C bus speed
      */
     TextLCD_I2C(PinName sda, PinName scl, lcd_size_t size = SIZE_16x2,
-                int8_t address = 123, uint32_t frequency = 400000);
+                int8_t address = TEXT_DISPLAY_I2C_ADDRESS, uint32_t frequency = 400000);
 
     /**
      * @brief Destructor
@@ -55,18 +57,17 @@ class TextLCD_I2C: public DisplayBase {
     /**
      * @brief Initialize display
      *
-     * @param dots Size of dots, can be 5x8 or 5x10 on some displays
      * @param i2c_obj I2C object to pass
+     * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
      */
-    void init(uint8_t dots = FN_5x8DOTS, I2C *i2c_obj = nullptr);
+    void init(I2C *i2c_obj = nullptr, lcd_char_t chars = CHAR_5X8);
 
     /**
      * @brief Set the backlight
      *
      * @param on
-     * @return true if successful, otherwise false
      */
-    bool setBacklight(bool on);
+    void setBacklight(bool on);
 
   protected:
     uint8_t dataRead() override;

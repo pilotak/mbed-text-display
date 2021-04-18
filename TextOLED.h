@@ -40,10 +40,10 @@ class TextOLED: public TextLCD {
     /**
      * @brief Initialize display
      *
-     * @param dots Size of dots, can be 5x8 or 5x10 on some displays
-     * @param chars Font table used
+     * @param font Font table used
+     * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
      */
-    void init(uint8_t dots = FN_5x8DOTS, uint8_t chars = FN_FONT_JAPANESE);
+    void init(lcd_font_t font = FONT_JAPANESE, lcd_char_t chars = CHAR_5X8);
 };
 
 #endif

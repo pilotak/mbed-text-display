@@ -26,13 +26,13 @@ DisplayBase::DisplayBase(lcd_size_t type, bool bf):
     _type(type), _bf(bf) {
 }
 
-void DisplayBase::init(uint8_t dots, uint8_t chars) {
+void DisplayBase::init(lcd_font_t font, lcd_char_t chars) {
     // Function Set
     for (auto i = 0; i < 2; i++) {
         writeBits(0b0010); // 4-bit mode
     }
 
-    writeBits((rows() == 2 ? FN_2LINE : FN_1LINE) | dots | chars);
+    writeBits((rows() == 2 ? FN_2LINE : FN_1LINE) | chars | font);
     waitReady();
 
     // Display ON/OFF Control
@@ -45,7 +45,7 @@ void DisplayBase::init(uint8_t dots, uint8_t chars) {
     home();
 
     // Entry Mode Set
-    writeCommand(CMD_ENTRY_MODE_SET | ENTRY_MODE_DECREMENT | ENTRY_MODE_SHIFT_RIGHT);
+    writeCommand(CMD_ENTRY_MODE_SET | ENTRY_MODE_INCREMENT | ENTRY_MODE_SHIFT_RIGHT);
 }
 
 void DisplayBase::character(uint8_t column, uint8_t row, uint8_t c) {
@@ -159,7 +159,7 @@ void DisplayBase::create(uint8_t location, uint8_t charmap[]) {
 }
 
 int DisplayBase::_putc(int value) {
-    if (value == '\n') {
+    if (value == '\n' || value == '\r') {
         _column = 0;
         _row++;
 
@@ -171,7 +171,7 @@ int DisplayBase::_putc(int value) {
         character(_column, _row, value);
         _column++;
 
-        if (_column >= columns()) {
+        if (_column >= 128 / rows()) {
             _column = 0;
             _row++;
 

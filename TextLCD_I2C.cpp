@@ -54,7 +54,7 @@ void TextLCD_I2C::initI2C(I2C *i2c_obj) {
     MBED_ASSERT(_i2c);
 }
 
-void TextLCD_I2C::init(uint8_t dots, I2C *i2c_obj) {
+void TextLCD_I2C::init(I2C *i2c_obj, lcd_char_t chars) {
     initI2C(i2c_obj);
 
     // Function Set
@@ -67,7 +67,7 @@ void TextLCD_I2C::init(uint8_t dots, I2C *i2c_obj) {
     // Function Set
     writeBits(0b0011); // 8-bit mode
 
-    DisplayBase::init(dots, FN_FONT_JAPANESE);
+    DisplayBase::init(FONT_JAPANESE, chars);
 }
 
 uint8_t TextLCD_I2C::dataRead() {
@@ -109,6 +109,13 @@ void TextLCD_I2C::rs(bool state) {
 void TextLCD_I2C::rw(bool state) {
     _pins &= ~0b10;
     _pins |= state << 1;
+
+    i2cWrite();
+}
+
+void TextLCD_I2C::setBacklight(bool on) {
+    _pins &= ~0b1000;
+    _pins |= on << 3;
 
     i2cWrite();
 }

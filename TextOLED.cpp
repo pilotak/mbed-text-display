@@ -25,11 +25,11 @@ TextOLED::TextOLED(PinName rs, PinName en, PinName d4, PinName d5, PinName d6, P
     MBED_ASSERT(size != SIZE_20x4);
 }
 
-void TextOLED::init(uint8_t dots, uint8_t chars) {
+void TextOLED::init(lcd_font_t font, lcd_char_t chars) {
     // Synchronization function for an 4-bit bus
     for (auto i = 0; i < 5; i++) {
         writeBits(0b0000);
     }
 
-    DisplayBase::init(dots, chars);
+    DisplayBase::init(font, chars);
 }

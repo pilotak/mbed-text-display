@@ -48,7 +48,19 @@ class DisplayBase : public Stream {
         LEFT_TO_RIGHT, // This is for text that flows Left to right
         RIGHT_TO_LEFT, // This is for text that flows right to left
         SCROLL_ON,     // This will 'right justify' text from the cursor
-        SCROLL_OFF,    // This will 'left justify' text from the cursor
+        SCROLL_OFF     // This will 'left justify' text from the cursor
+    };
+
+    enum lcd_char_t {
+        CHAR_5X10 = 0b100, // F
+        CHAR_5X8  = 0 // F
+    };
+
+    enum lcd_font_t {
+        FONT_JAPANESE    = 0b00, // (FT1 = 0, FT0 = 0)
+        FONT_EUROPEAN_I  = 0b01, // (FT1 = 0, FT0 = 1)
+        FONT_RUSSIAN     = 0b10, // (FT1 = 1, FT0 = 0)
+        FONT_EUROPEAN_II = 0b11 // (FT1 = 1, FT0 = 1)
     };
 
     /**
@@ -90,8 +102,8 @@ class DisplayBase : public Stream {
      * @brief Create a user defined char object
      * Allows us to fill the first 8 CGRAM locations with custom characters
      *
-     * @param location
-     * @param charmap
+     * @param location index 0-7
+     * @param charmap data with custom character
      */
     void create(uint8_t location, uint8_t charmap[]);
 
@@ -144,12 +156,6 @@ class DisplayBase : public Stream {
         FN_4BIT_MODE        = 0, // DL
         FN_2LINE            = 0b1000, // N
         FN_1LINE            = 0, // N
-        FN_5x10DOTS         = 0b100, // F
-        FN_5x8DOTS          = 0, // F
-        FN_FONT_JAPANESE    = 0b00, // (FT1 = 0, FT0 = 0)
-        FN_FONT_EUROPEAN_I  = 0b01, // (FT1 = 0, FT0 = 1)
-        FN_FONT_RUSSIAN     = 0b10, // (FT1 = 1, FT0 = 0)
-        FN_FONT_EUROPEAN_II = 0b11 // (FT1 = 1, FT0 = 1)
     };
 
     enum lcd_entry_mode_t {
@@ -168,9 +174,11 @@ class DisplayBase : public Stream {
 
     /**
      * @brief Initialize the display
-     *
+     * 
+     * @param font Font table used
+     * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
      */
-    void init(uint8_t dots = FN_5x8DOTS, uint8_t chars = FN_FONT_JAPANESE);
+    void init(lcd_font_t font, lcd_char_t chars);
 
     /**
      * @brief Write command (with wait or busy flag)
@@ -211,7 +219,7 @@ class DisplayBase : public Stream {
     bool _bf = false;
 
     uint8_t _control = CTRL_DISPLAY_OFF | CTRL_CURSOR_OFF | CTRL_BLINK_OFF;
-    uint8_t _entry_mode = ENTRY_MODE_DECREMENT | ENTRY_MODE_SHIFT_RIGHT;
+    uint8_t _entry_mode = ENTRY_MODE_INCREMENT | ENTRY_MODE_SHIFT_RIGHT;
 
     uint8_t _column = 0;
     uint8_t _row = 0;

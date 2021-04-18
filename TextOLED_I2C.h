@@ -32,7 +32,7 @@ class TextOLED_I2C: public TextLCD_I2C {
      * @param address 7-bit I2C address of the expander
      * @param frequency I2C bus speed
      */
-    TextOLED_I2C(lcd_size_t size = SIZE_16x2, int8_t address = 123);
+    TextOLED_I2C(lcd_size_t size = SIZE_16x2, int8_t address = TEXT_DISPLAY_I2C_ADDRESS);
 
     /**
      * @brief Create an I2C OLED interface
@@ -44,16 +44,16 @@ class TextOLED_I2C: public TextLCD_I2C {
      * @param frequency I2C bus speed
      */
     TextOLED_I2C(PinName sda, PinName scl, lcd_size_t size = SIZE_16x2,
-                 int8_t address = 123, uint32_t frequency = 400000);
+                 int8_t address = TEXT_DISPLAY_I2C_ADDRESS, uint32_t frequency = 400000);
 
     /**
      * @brief Initialize display
      *
-     * @param dots Size of dots, can be 5x8 or 5x10 on some displays
-     * @param chars Font table used
      * @param i2c_obj I2C object to pass
+     * @param font Font table used
+     * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
      */
-    void init(uint8_t dots = FN_5x8DOTS, uint8_t chars = FN_FONT_JAPANESE, I2C *i2c_obj = nullptr);
+    void init(I2C *i2c_obj = nullptr, lcd_font_t font = FONT_JAPANESE, lcd_char_t chars = CHAR_5X8);
 };
 
 #endif
