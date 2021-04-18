@@ -41,7 +41,7 @@ TextLCD::~TextLCD() {
     }
 }
 
-void TextLCD::init(lcd_char_t chars) {
+bool TextLCD::init(lcd_char_t chars) {
     // Function Set
     writeBits(0b11); // 8-bit mode
     ThisThread::sleep_for(5ms); // minimum 4.1ms
@@ -52,7 +52,7 @@ void TextLCD::init(lcd_char_t chars) {
     // Function Set
     writeBits(0b0011); // 8-bit mode
 
-    DisplayBase::init(FONT_JAPANESE, chars);
+    return DisplayBase::init(FONT_JAPANESE, chars);
 }
 
 uint8_t TextLCD::dataRead() {

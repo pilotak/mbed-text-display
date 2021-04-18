@@ -1,10 +1,15 @@
 {
   "name": "TextDisplay",
-  "keywords": "mbed, LCD, OLED, HD44780, RS0010, TextLCD",
-  "description": "LCD & OLED text display library",
+  "keywords": "mbed, LCD, OLED, HD44780, RS0010, WS0010, TextLCD, LiquidCrystal",
+  "description": "LCD & OLED text display library for Mbed",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pilotak/mbed-text-display"
+    "url": "https://github.com/pilotak/mbed-text-display.git"
+  },
+  "authors": {
+    "name": "Pavel Slama",
+    "email": "info@pavelslama.cz",
+    "url": "https://github.com/pilotak"
   },
   "version": "1.0.0",
   "frameworks": "mbed",

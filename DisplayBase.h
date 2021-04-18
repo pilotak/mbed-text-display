@@ -174,11 +174,13 @@ class DisplayBase : public Stream {
 
     /**
      * @brief Initialize the display
-     * 
+     *
      * @param font Font table used
      * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
+     *
+     * @return true if success, false otherwise
      */
-    void init(lcd_font_t font, lcd_char_t chars);
+    bool init(lcd_font_t font, lcd_char_t chars);
 
     /**
      * @brief Write command (with wait or busy flag)
@@ -209,10 +211,11 @@ class DisplayBase : public Stream {
     void writeByte(uint8_t value);
 
     /**
-     * @brief Wait for instruction completion
+     * @brief
      *
+     * @return false if timeout occurred, true otherwise
      */
-    void waitReady();
+    bool waitReady();
 
   private:
     const lcd_size_t _type = SIZE_16x2;

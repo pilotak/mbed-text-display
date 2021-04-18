@@ -52,8 +52,10 @@ class TextOLED_I2C: public TextLCD_I2C {
      * @param i2c_obj I2C object to pass
      * @param font Font table used
      * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
+     *
+     * @return true if success, false otherwise
      */
-    void init(I2C *i2c_obj = nullptr, lcd_font_t font = FONT_JAPANESE, lcd_char_t chars = CHAR_5X8);
+    bool init(I2C *i2c_obj = nullptr, lcd_font_t font = FONT_JAPANESE, lcd_char_t chars = CHAR_5X8);
 };
 
 #endif

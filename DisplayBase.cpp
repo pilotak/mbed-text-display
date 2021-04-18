@@ -26,7 +26,7 @@ DisplayBase::DisplayBase(lcd_size_t type, bool bf):
     _type(type), _bf(bf) {
 }
 
-void DisplayBase::init(lcd_font_t font, lcd_char_t chars) {
+bool DisplayBase::init(lcd_font_t font, lcd_char_t chars) {
     // Function Set
     for (auto i = 0; i < 2; i++) {
         writeBits(0b0010); // 4-bit mode
@@ -279,13 +279,23 @@ void DisplayBase::pulseEnable() {
     wait_us(40);
 }
 
-void DisplayBase::waitReady() {
+bool DisplayBase::waitReady() {
+    bool state = true;
+
     if (_bf) {
+        Timer t;
+        t.start();
+
         dataInput();
         rs(0);
         rw(1);
 
         while (1) {
+            if (t.read_us() >= MBED_CONF_TEXTDISPLAY_TIMEOUT) {
+                state = false;
+                break;
+            }
+
             en(0);
             wait_us(1);
             en(1);
@@ -309,4 +319,6 @@ void DisplayBase::waitReady() {
     } else {
         wait_us(40); // minimum 37us
     }
+
+    return state;
 }

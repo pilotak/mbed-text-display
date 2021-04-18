@@ -1,0 +1,9 @@
+{
+  "name": "TextDisplay",
+  "config": {
+    "timeout": {
+      "help": "Timeout for busy flag (us)",
+      "value": 10000
+    }
+  }
+}

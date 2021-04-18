@@ -31,7 +31,7 @@ TextOLED_I2C::TextOLED_I2C(PinName sda, PinName scl, lcd_size_t size, int8_t add
     MBED_ASSERT(size != SIZE_20x4);
 }
 
-void TextOLED_I2C::init(I2C *i2c_obj, lcd_font_t font, lcd_char_t chars) {
+bool TextOLED_I2C::init(I2C *i2c_obj, lcd_font_t font, lcd_char_t chars) {
     initI2C(i2c_obj);
 
     // Synchronization function for an 4-bit bus
@@ -39,5 +39,5 @@ void TextOLED_I2C::init(I2C *i2c_obj, lcd_font_t font, lcd_char_t chars) {
         writeBits(0b0000);
     }
 
-    DisplayBase::init(font, chars);
+    return DisplayBase::init(font, chars);
 }

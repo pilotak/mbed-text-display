@@ -42,8 +42,10 @@ class TextOLED: public TextLCD {
      *
      * @param font Font table used
      * @param chars Size of 1 character, can be 5x8 or 5x10 on some displays
+     *
+     * @return true if success, false otherwise
      */
-    void init(lcd_font_t font = FONT_JAPANESE, lcd_char_t chars = CHAR_5X8);
+    bool init(lcd_font_t font = FONT_JAPANESE, lcd_char_t chars = CHAR_5X8);
 };
 
 #endif
