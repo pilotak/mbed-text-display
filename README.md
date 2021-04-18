@@ -11,7 +11,14 @@ Supports both HD44780 and RS0010 interfaces commonly found in text LCD/OLED disp
 ```cpp
 #include "TextLCD.h"
 
-uint8_t upArrow[8] = {
+#define DISPLAY_RS_pin PB_1
+#define DISPLAY_E_pin  PB_2
+#define DISPLAY_D4_pin PB_3
+#define DISPLAY_D5_pin PB_4
+#define DISPLAY_D6_pin PB_5
+#define DISPLAY_D7_pin PB_6
+
+const uint8_t upArrow[8] = {
     0b00100,
     0b01010,
     0b10001,
@@ -21,7 +28,7 @@ uint8_t upArrow[8] = {
     0b00000,
 };
 
-uint8_t downArrow[8] = {
+const uint8_t downArrow[8] = {
     0b00000,
     0b00100,
     0b00100,
@@ -31,7 +38,7 @@ uint8_t downArrow[8] = {
     0b00100,
 };
 
-uint8_t rightArrow[8] = {
+const uint8_t rightArrow[8] = {
     0b00000,
     0b00100,
     0b00010,
@@ -41,7 +48,7 @@ uint8_t rightArrow[8] = {
     0b00000,
 };
 
-uint8_t leftArrow[8] = {
+const uint8_t leftArrow[8] = {
     0b00000,
     0b00100,
     0b01000,
@@ -52,7 +59,7 @@ uint8_t leftArrow[8] = {
 };
 
 TextLCD lcd(DISPLAY_RS_pin, DISPLAY_E_pin, DISPLAY_D4_pin, DISPLAY_D5_pin,
-             DISPLAY_D6_pin, DISPLAY_D7_pin, DISPLAY_RW_pin);
+             DISPLAY_D6_pin, DISPLAY_D7_pin);
 
 int main() {
     lcd.init();
@@ -88,7 +95,7 @@ int main() {
 
     // try long text
     lcd.locate(0, 0);
-    lcd.printf("Really long hello world\nwith short text");
+    lcd.printf("Really long hello world\nwith scrolling");
     ThisThread::sleep_for(2s);
 
     // scroll
@@ -112,6 +119,14 @@ int main() {
 
 ```cpp
 #include "TextOLED.h"
+
+#define DISPLAY_RS_pin PB_1
+#define DISPLAY_E_pin  PB_2
+#define DISPLAY_D4_pin PB_3
+#define DISPLAY_D5_pin PB_4
+#define DISPLAY_D6_pin PB_5
+#define DISPLAY_D7_pin PB_6
+#define DISPLAY_RW_pin PB_7
 
 TextOLED lcd(DISPLAY_RS_pin, DISPLAY_E_pin, DISPLAY_D4_pin, DISPLAY_D5_pin,
              DISPLAY_D6_pin, DISPLAY_D7_pin, DISPLAY_RW_pin);
