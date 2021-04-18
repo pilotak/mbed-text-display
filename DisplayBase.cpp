@@ -33,19 +33,24 @@ bool DisplayBase::init(lcd_font_t font, lcd_char_t chars) {
     }
 
     writeBits((rows() == 2 ? FN_2LINE : FN_1LINE) | chars | font);
-    waitReady();
 
-    // Display ON/OFF Control
-    writeCommand(CMD_DISPLAY_CONTROL | CTRL_DISPLAY_OFF | CTRL_CURSOR_OFF | CTRL_BLINK_OFF);
+    if (waitReady()) {
+        // Display ON/OFF Control
+        writeCommand(CMD_DISPLAY_CONTROL | CTRL_DISPLAY_OFF | CTRL_CURSOR_OFF | CTRL_BLINK_OFF);
 
-    // Display Clear
-    cls();
+        // Display Clear
+        cls();
 
-    // Return Home
-    home();
+        // Return Home
+        home();
 
-    // Entry Mode Set
-    writeCommand(CMD_ENTRY_MODE_SET | ENTRY_MODE_INCREMENT | ENTRY_MODE_SHIFT_RIGHT);
+        // Entry Mode Set
+        writeCommand(CMD_ENTRY_MODE_SET | ENTRY_MODE_INCREMENT | ENTRY_MODE_SHIFT_RIGHT);
+
+        return true;
+    }
+
+    return false;
 }
 
 void DisplayBase::character(uint8_t column, uint8_t row, uint8_t c) {
@@ -284,14 +289,15 @@ bool DisplayBase::waitReady() {
 
     if (_bf) {
         Timer t;
-        t.start();
 
         dataInput();
         rs(0);
         rw(1);
 
+        t.start();
+
         while (1) {
-            if (t.read_us() >= MBED_CONF_TEXTDISPLAY_TIMEOUT) {
+            if (t.elapsed_time().count() >= MBED_CONF_TEXTDISPLAY_TIMEOUT) {
                 state = false;
                 break;
             }

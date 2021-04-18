@@ -9,6 +9,7 @@ So what is the difference, why another fork?
 - rewritten initialization - not done in constructor in case you are using voltage level translator with OE pin & avoids delays
 - enums are within class context - in case you have a same variable defined elsewhere in the code, it will not collide
 - all display types share the same codebase, they only rewrite pin handling & initialization
+- you can specify char size 5x8 or 5x10 pixels
 
 Supports both HD44780 _(tested)_, RS0010 _(tested)_ and WS0010 _(untested)_ interfaces commonly found in text LCD/OLED displays.
 
