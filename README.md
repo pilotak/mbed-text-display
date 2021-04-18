@@ -2,11 +2,19 @@
 
 [![Framework Badge mbed](https://img.shields.io/badge/framework-mbed-008fbe.svg)](https://os.mbed.com/)
 
-Based on work by [sstaub](https://github.com/sstaub/mbedLCD) which is based on [Simon's work](https://os.mbed.com/users/simon/code/TextLCD/)
+Based on work by [sstaub](https://github.com/sstaub/mbedLCD) which is based on [Simon's work](https://os.mbed.com/users/simon/code/TextLCD/).
+So what is the difference, why another fork?
 
-Supports both HD44780 and RS0010 interfaces commonly found in text LCD/OLED displays.
+- optional R/W pin which enables reading busy flag to avoid fixed waiting time (once the display finishes the task it will let you know)
+- rewritten initialization - not done in constructor in case you are using voltage level translator with OE pin & avoids delays
+- enums are within class context - in case you have a same variable defined elsewhere in the code, it will not collide
+- all display types share the same codebase, they only rewrite pin handling & initialization
+
+Supports both HD44780 _(tested)_, RS0010 _(tested)_ and WS0010 _(untested)_ interfaces commonly found in text LCD/OLED displays.
 
 ## Example
+
+### LCD
 
 ```cpp
 #include "TextLCD.h"
@@ -62,6 +70,8 @@ TextLCD lcd(DISPLAY_RS_pin, DISPLAY_E_pin, DISPLAY_D4_pin, DISPLAY_D5_pin,
              DISPLAY_D6_pin, DISPLAY_D7_pin);
 
 int main() {
+    ThisThread::sleep_for(50ms); // give a time to wakeup the controller
+
     lcd.init();
     lcd.display(TextLCD::DISPLAY_ON);
 
@@ -117,6 +127,8 @@ int main() {
 }
 ```
 
+### OLED
+
 ```cpp
 #include "TextOLED.h"
 
@@ -134,6 +146,8 @@ TextOLED lcd(DISPLAY_RS_pin, DISPLAY_E_pin, DISPLAY_D4_pin, DISPLAY_D5_pin,
 const char spinner[] = {0x7C, 0x2F, 0x2D, 0xDA};
 
 int main() {
+    ThisThread::sleep_for(500ms); // give a time to wakeup the controller
+
     lcd.init(TextOLED::FONT_EUROPEAN_I);
     lcd.display(TextOLED::DISPLAY_ON);
 
