@@ -141,7 +141,7 @@ int main() {
 #define DISPLAY_D7_pin PB_6
 #define DISPLAY_RW_pin PB_7
 
-TextOLED lcd(DISPLAY_RS_pin, DISPLAY_E_pin, DISPLAY_D4_pin, DISPLAY_D5_pin,
+TextOLED oled(DISPLAY_RS_pin, DISPLAY_E_pin, DISPLAY_D4_pin, DISPLAY_D5_pin,
              DISPLAY_D6_pin, DISPLAY_D7_pin, DISPLAY_RW_pin);
 
 const char spinner[] = {0x7C, 0x2F, 0x2D, 0xDA};
@@ -149,15 +149,66 @@ const char spinner[] = {0x7C, 0x2F, 0x2D, 0xDA};
 int main() {
     ThisThread::sleep_for(500ms); // give a time to wakeup the controller
 
-    lcd.init(TextOLED::FONT_EUROPEAN_I);
-    lcd.display(TextOLED::DISPLAY_ON);
+    oled.init(TextOLED::FONT_EUROPEAN_I);
+    oled.display(TextOLED::DISPLAY_ON);
 
     // animate spinner
     while(1){
         for (size_t i = 0; i < sizeof(spinner); i++) {
-            lcd.character(0, 0, spinner[i]);
+            oled.character(0, 0, spinner[i]);
             ThisThread::sleep_for(150ms);
         }
+    }
+}
+```
+
+### LCD I2C
+```cpp
+#include "TextLCD_I2C.h"
+
+#define SDA PB_9
+#define SCL PB_8
+
+TextLCD_I2C lcd(SDA, SCL, false); // set to true if LCD backpack has different pinout
+
+int main() {
+    ThisThread::sleep_for(500ms); // give a time to wakeup the controller
+
+    if (lcd.init()) {
+        printf("init OK\n");
+        lcd.display(TextLCD_I2C::DISPLAY_ON);
+        lcd.setBacklight(true);
+        lcd.printf("Hello world\n");
+
+    } else {
+        printf("error\n");
+    }
+}
+```
+
+### OLED I2C
+You can use the constructor same as above or you can pass existing I2C object
+
+```cpp
+#include "TextOLED_I2C.h"
+
+#define SDA PB_9
+#define SCL PB_8
+
+I2C i2c(SDA, SCL)
+TextOLED_I2C oled;
+
+int main() {
+    ThisThread::sleep_for(500ms); // give a time to wakeup the controller
+
+    if (oled.init(&i2c)) {
+        printf("init OK\n");
+        oled.display(TextOLED_I2C::DISPLAY_ON);
+        oled.setBacklight(true);
+        oled.printf("Hello world\n");
+
+    } else {
+        printf("error\n");
     }
 }
 ```
