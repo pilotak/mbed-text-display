@@ -173,7 +173,7 @@ int main() {
 TextLCD_I2C lcd(SDA, SCL, false); // set to true if LCD backpack has different pinout
 
 int main() {
-    ThisThread::sleep_for(500ms); // give a time to wakeup the controller
+    ThisThread::sleep_for(50ms); // give a time to wakeup the controller
 
     if (lcd.init()) {
         printf("init OK\n");
