@@ -30,23 +30,26 @@ class TextLCD_I2C: public DisplayBase {
     /**
      * @brief Create an I2C LCD interface
      *
+     * @param alt_pinmap PCF8574 altternative pin maping
      * @param size Panel size
      * @param address 7-bit I2C address of the expander
      * @param frequency I2C bus speed
      */
-    TextLCD_I2C(lcd_size_t size = SIZE_16x2, int8_t address = TEXT_DISPLAY_I2C_ADDRESS);
+    TextLCD_I2C(bool alt_pinmap = false, lcd_size_t size = SIZE_16x2,
+                int8_t address = TEXT_DISPLAY_I2C_ADDRESS);
 
     /**
      * @brief Create an I2C LCD interface
      *
      * @param sda SDA pin
      * @param scl SCL pin
+     * @param alt_pinmap PCF8574 altternative pin maping
      * @param size Panel size
      * @param address 7-bit I2C address of the expander
      * @param frequency I2C bus speed
      */
-    TextLCD_I2C(PinName sda, PinName scl, lcd_size_t size = SIZE_16x2,
-                int8_t address = TEXT_DISPLAY_I2C_ADDRESS, uint32_t frequency = 400000);
+    TextLCD_I2C(PinName sda, PinName scl, bool alt_pinmap = false, lcd_size_t size = SIZE_16x2,
+                int8_t address = TEXT_DISPLAY_I2C_ADDRESS, uint32_t frequency = 100000);
 
     /**
      * @brief Destructor
@@ -78,15 +81,19 @@ class TextLCD_I2C: public DisplayBase {
     void rs(bool state) override;
     void rw(bool state) override;
 
-    void initI2C(I2C * i2c_obj = nullptr);
+    void initI2C(I2C *i2c_obj = nullptr);
 
   private:
-    I2C     *_i2c;
-    int8_t  _i2c_addr;
+    I2C *_i2c;
+    const int8_t _i2c_addr;
+    const bool _alt_pinmap = false;
     char _pins = 0;
     uint32_t _i2c_obj[sizeof(I2C) / sizeof(uint32_t)] = {0};
 
     bool i2cWrite();
+
+    void dataInput() {};
+    void dataOutput() {};
 };
 
 #endif

@@ -20,14 +20,14 @@ SOFTWARE.
 
 #include "TextOLED_I2C.h"
 
-TextOLED_I2C::TextOLED_I2C(lcd_size_t size, int8_t address):
-    TextLCD_I2C{size, address} {
+TextOLED_I2C::TextOLED_I2C(bool alt_pinmap, lcd_size_t size, int8_t address):
+    TextLCD_I2C{alt_pinmap, size, address} {
     MBED_ASSERT(size != SIZE_20x4);
 }
 
-TextOLED_I2C::TextOLED_I2C(PinName sda, PinName scl, lcd_size_t size, int8_t address,
-                           uint32_t frequency):
-    TextLCD_I2C{sda, scl, size, address, frequency} {
+TextOLED_I2C::TextOLED_I2C(PinName sda, PinName scl, bool alt_pinmap, lcd_size_t size,
+                           int8_t address, uint32_t frequency):
+    TextLCD_I2C{sda, scl, alt_pinmap, size, address, frequency} {
     MBED_ASSERT(size != SIZE_20x4);
 }
 

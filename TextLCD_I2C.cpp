@@ -20,22 +20,17 @@ SOFTWARE.
 
 #include "TextLCD_I2C.h"
 
-TextLCD_I2C::TextLCD_I2C(lcd_size_t size, int8_t address):
-    DisplayBase{size, true} {
-
-    dataWrite(0);
-    en(0);
-    rw(1);
+TextLCD_I2C::TextLCD_I2C(bool alt_pinmap, lcd_size_t size, int8_t address):
+    DisplayBase{size, false},
+    _i2c_addr(address),
+    _alt_pinmap(alt_pinmap) {
 }
 
-TextLCD_I2C::TextLCD_I2C(PinName sda, PinName scl, lcd_size_t size, int8_t address,
-                         uint32_t frequency):
-    DisplayBase{size, true} {
-
-    dataWrite(0);
-    en(0);
-    rw(1);
-
+TextLCD_I2C::TextLCD_I2C(PinName sda, PinName scl, bool alt_pinmap, lcd_size_t size,
+                         int8_t address, uint32_t frequency):
+    DisplayBase{size, false},
+    _i2c_addr(address),
+    _alt_pinmap(alt_pinmap) {
     _i2c = new (_i2c_obj) I2C(sda, scl);
     _i2c->frequency(frequency);
 }
@@ -52,6 +47,11 @@ void TextLCD_I2C::initI2C(I2C *i2c_obj) {
     }
 
     MBED_ASSERT(_i2c);
+
+    dataWrite(0);
+    en(0);
+    rw(1);
+    setBacklight(0);
 }
 
 bool TextLCD_I2C::init(I2C *i2c_obj, lcd_char_t chars) {
@@ -86,36 +86,66 @@ uint8_t TextLCD_I2C::dataRead() {
 }
 
 void TextLCD_I2C::dataWrite(uint8_t pins) {
-    _pins &= ~0b11110000;
-    _pins |= (pins & 0b1111) << 4;
+    if (_alt_pinmap) {
+        _pins &= ~0b00001111;
+        _pins |= (pins & 0b1111);
+
+    } else {
+        _pins &= ~0b11110000;
+        _pins |= (pins & 0b1111) << 4;
+    }
 
     i2cWrite();
 }
 
 void TextLCD_I2C::en(bool state) {
-    _pins &= ~0b100;
-    _pins |= state << 2;
+    if (_alt_pinmap) {
+        _pins &= ~0b00010000;
+        _pins |= state << 4;
 
-    i2cWrite();
-}
-
-void TextLCD_I2C::rs(bool state) {
-    _pins &= ~0b1;
-    _pins |= state;
+    } else {
+        _pins &= ~0b100;
+        _pins |= state << 2;
+    }
 
     i2cWrite();
 }
 
 void TextLCD_I2C::rw(bool state) {
-    _pins &= ~0b10;
-    _pins |= state << 1;
+    if (_alt_pinmap) {
+        _pins &= ~0b00100000;
+        _pins |= state << 5;
+
+    } else {
+        _pins &= ~0b10;
+        _pins |= state << 1;
+    }
+
+    i2cWrite();
+}
+
+void TextLCD_I2C::rs(bool state) {
+    if (_alt_pinmap) {
+        _pins &= ~0b01000000;
+        _pins |= state << 6;
+
+    } else {
+        _pins &= ~0b1;
+        _pins |= state;
+    }
 
     i2cWrite();
 }
 
 void TextLCD_I2C::setBacklight(bool on) {
-    _pins &= ~0b1000;
-    _pins |= on << 3;
+    if (_alt_pinmap) {
+        _pins &= ~0b10000000;
+        _pins |= !on << 7;
+
+    } else {
+        _pins &= ~0b1000;
+        _pins |= on << 3;
+    }
 
     i2cWrite();
 }

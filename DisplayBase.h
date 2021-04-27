@@ -105,7 +105,7 @@ class DisplayBase : public Stream {
      * @param location index 0-7
      * @param charmap data with custom character
      */
-    void create(uint8_t location, uint8_t charmap[]);
+    void create(uint8_t location, const uint8_t charmap[]);
 
     /**
      * @brief Writes a single char to a given position, usefull for UDC

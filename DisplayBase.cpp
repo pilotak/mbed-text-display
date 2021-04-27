@@ -151,7 +151,7 @@ void DisplayBase::display(lcd_mode_t mode) {
     }
 }
 
-void DisplayBase::create(uint8_t location, uint8_t charmap[]) {
+void DisplayBase::create(uint8_t location, const uint8_t charmap[]) {
     if (location > 7) { // only 8 locations available
         return;
     }

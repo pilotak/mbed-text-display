@@ -28,23 +28,26 @@ class TextOLED_I2C: public TextLCD_I2C {
     /**
      * @brief Create an I2C OLED interface
      *
+     * @param alt_pinmap PCF8574 altternative pin maping
      * @param size Panel size
      * @param address 7-bit I2C address of the expander
      * @param frequency I2C bus speed
      */
-    TextOLED_I2C(lcd_size_t size = SIZE_16x2, int8_t address = TEXT_DISPLAY_I2C_ADDRESS);
+    TextOLED_I2C(bool alt_pinmap = false, lcd_size_t size = SIZE_16x2,
+                 int8_t address = TEXT_DISPLAY_I2C_ADDRESS);
 
     /**
      * @brief Create an I2C OLED interface
      *
      * @param sda SDA pin
      * @param scl SCL pin
+     * @param alt_pinmap PCF8574 altternative pin maping
      * @param size Panel size
      * @param address 7-bit I2C address of the expander
      * @param frequency I2C bus speed
      */
-    TextOLED_I2C(PinName sda, PinName scl, lcd_size_t size = SIZE_16x2,
-                 int8_t address = TEXT_DISPLAY_I2C_ADDRESS, uint32_t frequency = 400000);
+    TextOLED_I2C(PinName sda, PinName scl, bool alt_pinmap = false, lcd_size_t size = SIZE_16x2,
+                 int8_t address = TEXT_DISPLAY_I2C_ADDRESS, uint32_t frequency = 100000);
 
     /**
      * @brief Initialize display
