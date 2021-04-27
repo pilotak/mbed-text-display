@@ -10,8 +10,9 @@ So what is the difference, why another fork?
 - enums are within class context - in case you have a same variable defined elsewhere in the code, it will not collide
 - all display types share the same codebase, they only rewrite pin handling & initialization
 - you can specify char size 5x8 or 5x10 pixels
+- I2C packpack (PCF8574) supported, there are two pinouts on the market - both are supported
 
-Supports both HD44780 _(tested)_, RS0010 _(tested)_ and WS0010 _(untested)_ interfaces commonly found in text LCD/OLED displays.
+Supports HD44780 _(tested)_, RS0010 _(tested)_ and WS0010 _(untested)_ interfaces commonly found in text LCD/OLED displays.
 
 ## Example
 
@@ -204,7 +205,6 @@ int main() {
     if (oled.init(&i2c)) {
         printf("init OK\n");
         oled.display(TextOLED_I2C::DISPLAY_ON);
-        oled.setBacklight(true);
         oled.printf("Hello world\n");
 
     } else {
